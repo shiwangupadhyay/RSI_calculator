@@ -3,7 +3,6 @@ import pandas as pd
 import yfinance as yf
 import ta
 
-# Define forex pairs
 forex_pairs = [
     'EURUSD=X', 'USDJPY=X', 'GBPUSD=X',
     'AUDUSD=X', 'USDCAD=X', 'USDCHF=X',
@@ -17,7 +16,7 @@ forex_pairs = [
     'NZDCHF=X', 'USDINR=X'
 ]
 
-# Define the indicator function
+
 def indicator(df):
     indicate = []
     df['RSI'] = ta.momentum.RSIIndicator(df['Close'], window=14).rsi()
@@ -31,7 +30,6 @@ def indicator(df):
             indicate.append('Neutral')
     return indicate
 
-# Define the output function
 def output(dataframe):
     Underbought = []
     Overbought = []
@@ -48,11 +46,9 @@ def output(dataframe):
                 Neutral.append(i)
     return Underbought, Overbought, Neutral, date
 
-# Streamlit app
 st.set_page_config(layout="wide")
 st.title('Forex RSI Indicator Analysis')
 
-# Sidebar for user input
 st.sidebar.header('Settings')
 select_all = st.sidebar.checkbox('Select All Forex Pairs', value=True)
 if select_all:
@@ -60,7 +56,6 @@ if select_all:
 else:
     selected_pairs = st.sidebar.multiselect('Select Forex Pairs', forex_pairs, default=forex_pairs[:5])
 
-# Download data
 results = {}
 results1 = {}
 
@@ -73,11 +68,11 @@ for pair in selected_pairs:
     results[pair] = data
     results1[pair] = data1
 
-# Process data
+
 Underbought, Overbought, Neutral, date = output(results)
 Underbought1, Overbought1, Neutral1, date1 = output(results1)
 
-# Display results
+
 st.write(f'For Date: {date}')
 st.subheader('FOR 1 HOUR INTERVAL')
 col1, col2, col3 = st.columns(3)
